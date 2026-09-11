@@ -1,0 +1,25 @@
+body {
+    background-color: #eef5f9; 
+    font-family: Arial, sans-serif;
+    padding: 30px;
+    
+}
+
+.my-button {
+    background-color: #007bff; /* Цвет фона */
+    color: #fff;              /* Цвет текста */
+    padding: 10px 20px;       /* Внутренние отступы */
+    border: none;             /* Убираем стандартную рамку */
+    border-radius: 5px;       /* Скругление углов */
+    font-size: 16px;          /* Размер текста */
+    cursor: pointer;          /* Курсор в виде руки при наведении */
+}
+
+.mainmenu {
+    list-style: none; /* Убирает маркеры-точки */
+    padding: 0;
+    margin: 0 0 25px 0;
+    display: flex;    /* Включает режим гибкой строки (флексбокс) */
+    gap: 15px;        /* СОЗДАЕТ ОТСТУПЫ МЕЖДУ КНОПКАМИ в 15 пикселей */
+    justify-content: center; /* РАСПОЛАГАЕТ КНОПКИ РОВНО ПО ЦЕНТРУ СТРАНИЦЫ */
+}
