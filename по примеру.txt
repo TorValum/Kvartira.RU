@@ -1,0 +1,74 @@
+def showSite(alias): !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    StationId, StationName, url = dbase.getStations(alias)
+    if request.method == "POST":
+        res = dbase.objectsInCertificates(request.form['name'], request.form['number'], alias)
+        if not res:
+            flash('Ошибка добавления Объекта', category='error')
+        else:
+            flash('Объект успешно добавлен в Сертификат', category='success')
+
+    return render_template('station.html', menu=dbase.getMenu(), certificates=dbase.getCertificateAnonce(), propertyObjects=dbase.getObjectAnonce(), 
+                           objectsInCertificate=dbase.getObjectInCertificatesAnonce(), StationId=StationId, StationName=StationName, title=StationName)
+
+
+def getStations(self, alias): !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        try:
+            self.__cur.execute(f"SELECT StationId, StationName, url FROM stations WHERE StationId = '{alias}' LIMIT 1")
+            res = self.__cur.fetchone()
+            if res: 
+                return res
+        except sqlite3.Error as e:
+            print("Ошибка чтения из БД"+str(e))
+
+        return (False, False)
+
+
+--Метод добавления новой квартиры (от лица арендодатор)
+def newKvartira(self, StationName, url):????????????????????????????????????
+        try:
+            self.__cur.execute(f"SELECT COUNT() as `count` FROM Kvartira WHERE adres LIKE '{adres}'")
+            res = self.__cur.fetchone()
+            if res['count'] > 0:
+                print("Такая квартира уже существует")
+                return False
+            self.__cur.execute("INSERT INTO Kvartira VALUES(NULL, ?, ?)", (Kvartira.adres url))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Ошибка добавления квартиры в Базу Данных" +str(e))
+            return False
+        return True
+
+--Запрос вытаскивает все квартиры, которые есть в БД ????????????????????????????????????
+def getKvartira(self):
+        try:
+            self.__cur.execute(f"SELECT Id, adres, cena, rooms, url FROM Kvartira ORDER BY adres")
+            res = self.__cur.fetchall()
+            if res: return res
+        except sqlite3.Error as e:
+            print("Ошибка получения квартир из БД"+str(e))
+        
+        return[]
+
+--Создание новой заявки
+def zayvka_kvartira():????????????????????????????????????
+    db = get_db()
+    dbase = FDataBase(db)
+    if request.method == "POST":
+        if len(request.form['zhelaemyi_adres']) >= 4 && len(request.form['zhelaemyi_cena']) >= 4 &&  len(request.form['kol_vo_rooms']) >0:
+            res = dbase.kvartira(request.form['adres'], request.form['url'])
+            if not res:
+                flash('Ошибка добавления заявки', category='error')
+            else:
+                flash('Заявка успешно добавлена', category='success')
+        else:
+            flash('Ошибка добавления заявки', category='error')
+    
+    return render_template('stations.html', menu=dbase.getMenu(), title="Станции", stations=dbase.getStationAnonce())
+
+
+</body>
+</html>
+
+
+
++создай файл Kvartira.html,для отрисовки самого сайта
