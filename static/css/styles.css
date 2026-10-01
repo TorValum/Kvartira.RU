@@ -1,8 +1,19 @@
+
+
 body {
-    background-color: #eef5f9; 
-    font-family: Arial, sans-serif;
-    padding: 30px;
+    background: #000; 
+    background-image: url('../images/back.jpg');
+    background-repeat: no-repeat;
     
+    background-size: cover;
+    color: #fff;
+
+    
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
 
 .my-button {
@@ -13,6 +24,33 @@ body {
     border-radius: 5px;       /* Скругление углов */
     font-size: 16px;          /* Размер текста */
     cursor: pointer;          /* Курсор в виде руки при наведении */
+    text-decoration: none; 
+}
+
+.my-button2 {
+    
+    background-color: #007bff; 
+    color: #fff;             
+    border: none;             
+    border-radius: 5px;       
+    font-size: 16px;         
+    cursor: pointer;          
+
+    
+    width: 250px;             /* Ширина карточки */
+    height: 180px;            /* Высота карточки */
+    
+    background-size: cover;       /* Картинка сама растянется по размеру кнопки */
+    background-position: center;  /* Картинка отцентрируется */
+    
+    /* ВЫРАВНИВАНИЕ ТЕКСТА ИЗ БАЗЫ: */
+    display: flex;
+    justify-content: center;   /* Текст встанет ровно по центру горизонтали */
+    align-items: center;       /* Текст встанет ровно по центру вертикали */
+    
+    /* ДОПОЛНИТЕЛЬНО: затемнение, чтобы белый текст читался на фоне картинки */
+    background-blend-mode: overlay;
+    background-color: rgba(0, 0, 0, 0.4); 
 }
 
 .mainmenu {
@@ -22,4 +60,92 @@ body {
     display: flex;    /* Включает режим гибкой строки (флексбокс) */
     gap: 15px;        /* СОЗДАЕТ ОТСТУПЫ МЕЖДУ КНОПКАМИ в 15 пикселей */
     justify-content: center; /* РАСПОЛАГАЕТ КНОПКИ РОВНО ПО ЦЕНТРУ СТРАНИЦЫ */
+}
+
+.csKvartiras {
+    list-style: none; /* Убирает маркеры-точки */
+    padding: 0;
+    margin: 40px 0 25px 0; /* Отступ сверху — опускает карточки вниз от заголовка */
+    display: flex;    /* Включает режим гибкой строки (флексбокс) */
+    flex-wrap: wrap;  /* Если не влезают в строку — переносятся на следующую */
+    gap: 30px;        /* Отступы между карточками */
+    justify-content: center; /* РАСПОЛАГАЕТ КАРТОЧКИ РОВНО ПО ЦЕНТРУ СТРАНИЦЫ */
+    align-items: center;
+}
+
+.csKvartiras > li {
+    display: flex;
+}
+
+.button_picture{
+    width: 15em;
+    border: 1px solid #333;
+    box-shadow: 8px 8px 5px #444;
+    padding: 8px 12px;
+    background-image: linear-gradient(180deg, #fff, #ddd 40%, #ccc);
+}
+
+.kvartira-card {
+    position: relative;
+    display: block;
+    width: 300px;
+    height: 220px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kvartira-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.45);
+}
+
+.kvartira-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.kvartira-page-img {
+    display: block;
+    width: 320px;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+}
+
+.kvartira-spec {
+    list-style: none;
+    padding: 0;
+} 
+
+.kvartira-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 14px 12px;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75));
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.kvartira-card:hover .kvartira-title {
+    opacity: 1;
+}
+
+.home-btn-wrap {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 25px;
+}
+
+.home-btn-wrap .my-button {
+    text-decoration: none;
 }

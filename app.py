@@ -12,11 +12,6 @@ app.config.from_object(__name__)
 
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'bd.db')))
 
-menu = [ {"name": "Квартиры", "url": "/kvartiry"},
-        {"name": "Заявка", "url": "/about"},
-        {"name": "Обратная связь", "url": "/contact"},
-]
-
 def connect_db():
     conn = sqlite3.connect(app.config['DATABASE'])
     conn.row_factory = sqlite3.Row
@@ -43,7 +38,7 @@ def before_request():
     db = get_db()
     dbase = FDataBase(db)
 
-@app.route("/")
+@app.route("/") ##если есть / d url
 def index ():
     db = get_db()
     dbase = FDataBase(db)
@@ -53,8 +48,26 @@ def index ():
 def show_kvartiry():
     db = get_db()
     dbase = FDataBase(db)
-    kvartiry = dbase.getKvartira()
-    return render_template('Kvartira.html', menu = dbase.getMenu(), kvartiry=kvartiry)
+    kvartiry = dbase.getKvartiras()
+    return render_template('Kvartira.html', kvartiry=kvartiry)
+
+@app.route("/udm")
+def kvartira_udm():
+    kv =dbase.getKvartiraByUrl('/udm')
+    if not kv: abort(404)
+    return render_template('KvartiraUdm.html', kv=kv)
+
+@app.route("/mol")
+def kvartira_mol():
+    kv =dbase.getKvartiraByUrl('/mol')
+    if not kv: abort(404)
+    return render_template('KvartiraMol.html', kv=kv)
+
+@app.route("/sov")
+def kvartira_sov():
+    kv =dbase.getKvartiraByUrl('/sov')
+    if not kv: abort(404)
+    return render_template('KvartiraSov.html', kv=kv)
 
 ##Создание новой заявки ??????????????????
 @app.route("/zayavka", methods=["POST", "GET"])

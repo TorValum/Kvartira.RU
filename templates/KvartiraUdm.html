@@ -1,0 +1,19 @@
+{% extends 'base.html' -%}
+
+{% block title -%}
+<title>{{kv.adres}}</title>
+{% endblock -%}
+
+{% block content -%}
+{{super()}}
+<h2>{{kv.adres}}</h2>
+<img src="{{ url_for('static', filename='images/' + kv.image_part) }}" class="kvartira-page-img">
+<ul class="kvartira-spec">
+    <li>Адрес: {{kv.adres}}</li>
+    <li>Комнат: {{kv.rooms}}</li>
+    <li>Цена: {{kv.cena}}</li>
+</ul>
+<div class="home-btn-wrap">
+    <a class="my-button" href="{{ url_for('index') }}">Главная</a>
+</div>
+{% endblock -%}

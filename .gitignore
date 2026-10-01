@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# содержит логин и пароль — не в репозиторий
+secret.txt
+
+# дубликат проекта
+Project-Akeev3/

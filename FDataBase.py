@@ -29,9 +29,9 @@ class FDataBase:
 #        return (False, False)
 #'''
 ##Запрос вытаскивает все квартиры, которые есть в БД ????????????????????????????????????
-    def getKvartira(self):
+    def getKvartiras(self):
         try:
-            self.__cur.execute(f"SELECT Id, adres, cena, rooms FROM Kvartira ORDER BY adres")
+            self.__cur.execute(f"SELECT id, adres, image_part, url FROM Kvartiras2 ORDER BY adres")
             res = self.__cur.fetchall()
             if res: return res
         except sqlite3.Error as e:
@@ -42,15 +42,24 @@ class FDataBase:
 ##Метод добавления новой квартиры (от лица арендодатор) ???????????????
     def newKvartira(self, adres, cena, rooms, SobstvenikId):
         try:
-            self.__cur.execute(f"SELECT COUNT() as count FROM Kvartira WHERE adres LIKE ?" (adres,))
+            self.__cur.execute(f"SELECT COUNT() as count FROM Kvartira WHERE adres LIKE ?")
             res = self.__cur.fetchone()
             if res['count'] > 0:
                 print("Такая квартира уже существует")
                 return False
-            self.__cur.execute("INSERT INTO Kvartira (adres, cena, rooms, SobstvenikId) VALUES(?, ?, ?, ?)", (adres, cena, rooms, SobstvenikId))
+            self.__cur.execute("INSERT INTO Kvartira (adres, cena, rooms, SobstvenikId) VALUES(NULL, ?, ?, ?, ?)", (adres, cena, rooms, SobstvenikId))
             self.__db.commit()
         except sqlite3.Error as e:
             print("Ошибка добавления квартиры в Базу Данных" +str(e))
             return False
         return True
+    
+    def getKvartiraByUrl(self, url):
+        try:
+            self.__cur.execute("SELECT Kvartiras2.adres, Kvartiras2.image_part, Kvartira.cena, Kvartira.rooms FROM Kvartiras2 LEFT JOIN Kvartira ON Kvartiras2.KvartiraId = Kvartira.id WHERE Kvartiras2.url = ?", (url,))
+            return self.__cur.fetchone()
+        except sqlite3.Error as e:
+            print("Ошибка получения квартиры" + str(e))
+        return None
+
 

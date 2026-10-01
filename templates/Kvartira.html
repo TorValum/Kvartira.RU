@@ -4,7 +4,27 @@
 <title>Квартиры</title>
 {% endblock -%}
 
-{% block content -%}
+
 
 <h2>Список квартир</h2>
+<body>
+{% block content -%}   
+    {% block menu_kvartiras -%}
+    <ul class="csKvartiras">
+        {% for k in kvartiry -%}
+            <li>
+            <a class="kvartira-card" href="{{k.url}}" title="{{k.adres}}">
+            <img src="{{ url_for('static', filename='images/' + k.image_part) }}" class="kvartira-img" alt="{{k.adres}}">
+            <span class="kvartira-title">{{k.adres}}</span>
+            </a>
+            </li>
+            {% endfor -%}
+    </ul>
+    {% endblock menu_kvartiras -%}
+
+    <div class="home-btn-wrap">
+        <a class="my-button" href="{{ url_for('index') }}">Главная</a>
+    </div>
 {% endblock -%}
+
+</body>

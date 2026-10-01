@@ -12,6 +12,14 @@ CREATE TABLE IF NOT EXISTS Sobstvenik (
     phone_number varchar
 );
 
+create TABLE IF NOT EXISTS Kvartiras (
+    id integer primary key AUTOINCREMENT,
+    adres varchar,
+    url text NOT NULL
+);
+
+DROP TABLE IF EXISTS Kvartiras;
+
 create TABLE IF NOT EXISTS Kvartira (
     id integer primary key AUTOINCREMENT,
     adres varchar,
@@ -19,6 +27,16 @@ create TABLE IF NOT EXISTS Kvartira (
     rooms integer,
     SobstvenikId integer,
     foreign key (SobstvenikId) references Sobstvenik(id)
+);
+
+CREATE TABLE IF NOT EXISTS Kvartiras2 (
+    id integer PRIMARY KEY AUTOINCREMENT,
+    adres varchar,
+    image_part NOT NULL, 
+    url text NOT NULL,
+    KvartiraId integer,
+    foreign key (KvartiraId) references Kvartira(id),
+    ALTER TABLE Kvartiras2 ADD COLUMN KvartiraId integer,
 );
 
 create Table IF NOT EXISTS client(
