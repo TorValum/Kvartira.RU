@@ -40,12 +40,27 @@ def before_request():
 
 @app.route("/") ##если есть / d url
 def index ():
+    print(url_for('index'))
     db = get_db()
     dbase = FDataBase(db)
     return render_template('index.html', menu = dbase.getMenu())
 
+@app.route("/contact", methods=["POST", "GET"]) 
+def contact ():
+    print(url_for('contact'))
+    if request.method == 'POST':
+        print(request.form['username'])
+        if len(request.form['username']) >2 and len(request.form['email']) >2:
+            flash('Сообщение отправлено', category='success')
+        else:
+            flash('Ошибка отправки', category='error')
+    db = get_db()
+    dbase = FDataBase(db)
+    return render_template('feedback.html')
+
 @app.route("/kvartiry")
 def show_kvartiry():
+    print(url_for('show_kvartiry'))
     db = get_db()
     dbase = FDataBase(db)
     kvartiry = dbase.getKvartiras()
@@ -53,18 +68,21 @@ def show_kvartiry():
 
 @app.route("/udm")
 def kvartira_udm():
+    print(url_for('kvartira_udm'))
     kv =dbase.getKvartiraByUrl('/udm')
     if not kv: abort(404)
     return render_template('KvartiraUdm.html', kv=kv)
 
 @app.route("/mol")
 def kvartira_mol():
+    print(url_for('kvartira_mol'))
     kv =dbase.getKvartiraByUrl('/mol')
     if not kv: abort(404)
     return render_template('KvartiraMol.html', kv=kv)
 
 @app.route("/sov")
 def kvartira_sov():
+    print(url_for('kvartira_sov'))
     kv =dbase.getKvartiraByUrl('/sov')
     if not kv: abort(404)
     return render_template('KvartiraSov.html', kv=kv)
@@ -72,6 +90,7 @@ def kvartira_sov():
 ##Создание новой заявки ??????????????????
 @app.route("/zayavka", methods=["POST", "GET"])
 def zayvka_kvartira():
+    print(url_for('zayvka_kvartira'))
     db = get_db()
     dbase = FDataBase(db)
     if request.method == "POST":

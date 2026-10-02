@@ -1,0 +1,29 @@
+{% extends 'base.html' -%}
+
+{% block title -%}
+<title> Обратная связь</title>
+{% endblock -%}
+</head>
+
+<body>
+    {% block content -%}
+    {% block mainmenu -%}
+    <h3>Обратная связь</h3>
+    <h2>Будем рады любому отзыву!</h2>
+    {% for cat, msg in get_flashed_messages(True) %}
+    <div class="flash {{cat}}">{{msg}}</div>
+    {% endfor %}
+    <form action="/contact" method="post" class="form-contact">
+        <p><label>Имя:</label><input type="text" name="username" value="" required />
+        <p><label>Email:</label><input type="text" name="email" value="" required />
+        <p><label>Сообщение:</label>
+        <p><textarea name="message" rows=7 cols=40></textarea></p>
+        <p><input type="submit" value="Отправить" />
+    </form>
+    {% endblock mainmenu -%}
+
+    <div class="home-btn-wrap">
+        <a class="my-button" href="{{ url_for('index') }}">Главная</a>
+    </div>
+    {% endblock -%}
+</body>

@@ -7,24 +7,26 @@
 
 
 <h2>Список квартир</h2>
+
 <body>
-{% block content -%}   
+    {% block content -%}
     {% block menu_kvartiras -%}
     <ul class="csKvartiras">
         {% for k in kvartiry -%}
-            <li>
+        <li>
             <a class="kvartira-card" href="{{k.url}}" title="{{k.adres}}">
-            <img src="{{ url_for('static', filename='images/' + k.image_part) }}" class="kvartira-img" alt="{{k.adres}}">
-            <span class="kvartira-title">{{k.adres}}</span>
+                <img src="{{ url_for('static', filename='images/' + k.image_part) }}" class="kvartira-img"
+                    alt="{{k.adres}}">
+                <span class="kvartira-title">{{k.adres}}</span>
             </a>
-            </li>
-            {% endfor -%}
+        </li>
+        {% endfor -%}
     </ul>
     {% endblock menu_kvartiras -%}
 
     <div class="home-btn-wrap">
-        <a class="my-button" href="{{ url_for('index') }}">Главная</a>
+        <a class="my-button___" href="{{ url_for('index') }}">Главная</a>
     </div>
-{% endblock -%}
+    {% endblock -%}
 
 </body>
