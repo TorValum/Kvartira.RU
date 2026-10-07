@@ -87,8 +87,8 @@ def kvartira_sov():
     if not kv: abort(404)
     return render_template('KvartiraSov.html', kv=kv)
 
-##Создание новой заявки ??????????????????
-@app.route("/zayavka", methods=["POST", "GET"])
+##Создание новой 
+@app.route("/about", methods=["POST", "GET"])
 def zayvka_kvartira():
     print(url_for('zayvka_kvartira'))
     db = get_db()
@@ -99,7 +99,6 @@ def zayvka_kvartira():
                 request.form['zhelaemyi_adres'],
                 request.form['zhelaemyi_cena'],
                 request.form['kol_vo_rooms'],
-                1  # clientId (пока заглушка)
             )   
             if not res:
                 flash('Ошибка добавления заявки', category='error')
@@ -108,7 +107,7 @@ def zayvka_kvartira():
         else:
             flash('Ошибка добавления заявки', category='error')
     
-    return render_template('Zayavka.html', menu=dbase.getMenu(), title="Заявки")
+    return render_template('zayvka.html', menu=dbase.getMenu(), title="Заявки")
 
 '''
 ##хз!!!!!!!!!!!!!!!!!!
@@ -126,4 +125,4 @@ def showSite(alias):
 
 '''
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

@@ -62,4 +62,15 @@ class FDataBase:
             print("Ошибка получения квартиры" + str(e))
         return None
 
-
+    def newZayavka(self, zhelaemyi_adres, zhelaemyi_cena, zhelaemyi_rooms):
+        try:
+            self.__cur.execute("INSERT INTO Zayavka2 (zhelaemyi_adres, zhelaemyi_cena, zhelaemyi_rooms) VALUES (?, ?, ?)", (zhelaemyi_adres, zhelaemyi_cena,zhelaemyi_rooms))
+            self.__db.commit()
+            print("Заявка успешно добавлена")
+            return True
+        except sqlite3.Error as e:
+            print("Ошибка добавления заявки в Базу Данных" +str(e))
+            print("-" * 50)
+            print("КРИТИЧЕСКАЯ ОШИБКА SQLITE:", e)
+            print("-" * 50)
+            return False

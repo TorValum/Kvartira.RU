@@ -35,8 +35,7 @@ CREATE TABLE IF NOT EXISTS Kvartiras2 (
     image_part NOT NULL, 
     url text NOT NULL,
     KvartiraId integer,
-    foreign key (KvartiraId) references Kvartira(id),
-    ALTER TABLE Kvartiras2 ADD COLUMN KvartiraId integer,
+    foreign key (KvartiraId) references Kvartira(id)
 );
 
 create Table IF NOT EXISTS client(
@@ -45,6 +44,9 @@ create Table IF NOT EXISTS client(
     phone_number varchar
 );
 
+--старая таблицы заявки(возможно, сделаю её как пул информацию
+--пользователь после сравнения заявки которую оставил клиент и
+--само сравнение с бд)
 create Table IF NOT EXISTS Zayavka(
     id integer primary key AUTOINCREMENT,
     zhelaemyi_adres varchar,
@@ -53,6 +55,13 @@ create Table IF NOT EXISTS Zayavka(
     satus varchar,
     KvartiraId integer,
     clientId integer,
-    foreign key (clientId) references client(id)
+    foreign key (clientId) references client(id),
     foreign key (KvartiraId) references Kvartira(id)
+);
+
+create Table IF NOT EXISTS Zayavka2(
+    id integer primary key AUTOINCREMENT,
+    zhelaemyi_adres varchar,
+    zhelaemyi_cena integer,
+    zhelaemyi_rooms integer
 );

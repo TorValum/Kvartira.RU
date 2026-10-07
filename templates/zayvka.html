@@ -1,0 +1,28 @@
+{% extends 'base.html' -%}
+
+{% block title -%}
+<title> Заявка</title>
+{% endblock -%}
+</head>
+
+<body>
+    {% block content -%}
+    {% block mainmenu -%}
+    <h3>Заявка</h3>
+    <h2>Выберите подходящие парметры для желаемой квартиры:</h2>
+    {% for cat, msg in get_flashed_messages(True ) %}
+    <div class="flash {{cat}}">{{msg}}</div>
+    {% endfor %}
+    <form action="/about" method="post" class="form-contact">
+        <p><label>Адрес:</label><input type="text" name="zhelaemyi_adres" value="" required />
+        <p><label> Цена:</label><input type="integer" name="zhelaemyi_cena" value="" required />
+        <p><label> Количесттво комнат:</label><input type="integer" name="kol_vo_rooms" value="" required />
+        <p><input type="submit" value="Отправить" />
+    </form>
+    {% endblock mainmenu -%}
+
+    <div class="home-btn-wrap">
+        <a class="my-button" href="{{ url_for('index') }}">Главная</a>
+    </div>
+    {% endblock -%}
+</body>
