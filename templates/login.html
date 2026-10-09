@@ -1,0 +1,19 @@
+{% extends 'base.html' -%}
+
+{% block title -%}
+<title> Регистрация</title>
+{% endblock -%}
+</head>
+
+<body>
+    {% block content -%}
+    {% block mainmenu -%}
+    <h3>Регистрация</h3>
+    <form action="/login" method="post" class="form-contact">
+        <p><label>Имя:</label><input type="text" name="username" value="" required />
+        <p><label> Пароль:</label><input type="password" name="psw" value="" required />
+        <p><input type="submit" value="Войти" />
+    </form>
+    {% endblock -%}
+</body>
+{% endblock -%}

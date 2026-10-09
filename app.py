@@ -1,10 +1,10 @@
 import sqlite3
 import os
-from flask import Flask, render_template, request, g, flash, abort, url_for
+from flask import Flask, render_template, request, g, flash, abort, url_for, session, redirect
 from FDataBase import FDataBase
 
 DATABSE = 'bd.db'
-DEBUG = True
+DEBUG = True 
 SECRET_KEY = "dasdsadsa"
 
 app = Flask(__name__)
@@ -86,6 +86,32 @@ def kvartira_sov():
     kv =dbase.getKvartiraByUrl('/sov')
     if not kv: abort(404)
     return render_template('KvartiraSov.html', kv=kv)
+
+@app.errorhandler(404)
+def error(e):
+    db = get_db()
+    dbase = FDataBase(db)
+    menu = dbase.getMenu() 
+    return render_template('error.html', menu = menu)
+
+@app.route("/profile/<username>")
+def profile(username):
+    if 'userLogged' not in session or session['userLogged'] != username:
+        abort(401)
+    return f"Профиль пользователя: {username}"
+
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    db = get_db()
+    dbase = FDataBase(db)
+    menu = dbase.getMenu()
+    if 'userLogged' in session:
+        return redirect(url_for('profile', username=session['userLogged']))
+    elif request.method == 'POST' and  request.form['username'] == "selfedu" and request.form['psw'] == "123":
+        session['userLogged'] = request.form['username']
+        return redirect(url_for('profile', username=session['userLogged']))
+    
+    return render_template('login.html', title="Авторизация", menu=menu)
 
 ##Создание новой 
 @app.route("/about", methods=["POST", "GET"])
