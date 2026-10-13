@@ -1,11 +1,11 @@
 import sqlite3
 import os
-from flask import Flask, render_template, request, g, flash, abort, url_for, session, redirect
+from flask import Flask, render_template, request, g, flash, abort, url_for, session, redirect, make_response
 from FDataBase import FDataBase
 
 DATABSE = 'bd.db'
 DEBUG = True 
-SECRET_KEY = "dasdsadsa"
+app.config['SECRET_KEY'] = "dasdsajfdsfkjdsfkjbdhfbdsi32139721387198739fuidhuh178dsa"
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -100,18 +100,34 @@ def profile(username):
         abort(401)
     return f"Профиль пользователя: {username}"
 
-@app.route("/login", methods=["POST", "GET"])
-def login():
-    db = get_db()
-    dbase = FDataBase(db)
-    menu = dbase.getMenu()
-    if 'userLogged' in session:
-        return redirect(url_for('profile', username=session['userLogged']))
-    elif request.method == 'POST' and  request.form['username'] == "selfedu" and request.form['psw'] == "123":
-        session['userLogged'] = request.form['username']
-        return redirect(url_for('profile', username=session['userLogged']))
+##@app.route("/login", methods=["POST", "GET"])
+##def login():
+##    db = get_db()
+##    dbase = FDataBase(db)
+##    menu = dbase.getMenu()
+##    if 'userLogged' in session:
+##        return redirect(url_for('profile', username=session['userLogged']))
+##    elif request.method == 'POST' and  request.form['username'] == "selfedu" and request.form['psw'] == "123":
+##        session['userLogged'] = request.form['username']
+##        return redirect(url_for('profile', username=session['userLogged']))
     
-    return render_template('login.html', title="Авторизация", menu=menu)
+##    return render_template('login.html', title="Авторизация", menu=menu)
+
+
+@app.route("/login")
+def login():
+    log=""
+    if request.cookies.get('logged'):
+        log = request.cookies.get('logged')
+    res = make_response(f"<h1>Форма автторизации</h1><p>loogged: {log}")
+    res.set_cookie("logged", "yes", 30*24*3600)
+    return res
+
+@app.route("/logout")
+def logout():
+    res = make_response("<p>Вы больше не авторизованы!</p>")
+    res.set_cookie("logged", "", 0)
+    return res
 
 ##Создание новой 
 @app.route("/about", methods=["POST", "GET"])
@@ -151,4 +167,4 @@ def showSite(alias):
 
 '''
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5003)
