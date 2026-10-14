@@ -65,3 +65,11 @@ create Table IF NOT EXISTS Zayavka2(
     zhelaemyi_cena integer,
     zhelaemyi_rooms integer
 );
+
+CREATE Table if NOT EXISTS users(
+    id integer PRIMARY KEY AUTOINCREMENT,
+    name text NOT NULL,
+    email text NOT null,
+    psw text not null,
+    time integer not null
+)

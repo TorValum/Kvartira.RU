@@ -1,14 +1,15 @@
 import sqlite3
 import os
 from flask import Flask, render_template, request, g, flash, abort, url_for, session, redirect, make_response
+from werkzeug.security import generate_password_hash
 from FDataBase import FDataBase
 
 DATABSE = 'bd.db'
 DEBUG = True 
-app.config['SECRET_KEY'] = "dasdsajfdsfkjdsfkjbdhfbdsi32139721387198739fuidhuh178dsa"
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+app.config['SECRET_KEY'] = "dasdsajfdsfkjdsfkjbdhfbdsi32139721387198739fuidhuh178dsa"
 
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'bd.db')))
 
@@ -100,6 +101,25 @@ def profile(username):
         abort(401)
     return f"Профиль пользователя: {username}"
 
+@app.route("/login")
+def login():
+    return render_template("login.html", menu = dbase.getMenu())
+
+
+@app.route("/register", methods=["POST", "GET"])
+def register():
+    db = get_db()
+    dbase = FDataBase(db)
+    if request.method == "POST":
+        if request.form['psw'] != request.form['psw2']:
+            flash('Пароли не совпадают', category='error')
+        elif dbase.addUser(request.form['name'], request.form['email'], generate_password_hash(request.form['psw'])):
+            flash('Вы успешно зарегистрированы', category='success')
+            return redirect(url_for('login'))
+        else:
+            flash('Ошибка регистрации', category='error')
+    return render_template("register.html", menu = dbase.getMenu()) 
+
 ##@app.route("/login", methods=["POST", "GET"])
 ##def login():
 ##    db = get_db()
@@ -114,20 +134,23 @@ def profile(username):
 ##    return render_template('login.html', title="Авторизация", menu=menu)
 
 
-@app.route("/login")
-def login():
-    log=""
-    if request.cookies.get('logged'):
-        log = request.cookies.get('logged')
-    res = make_response(f"<h1>Форма автторизации</h1><p>loogged: {log}")
-    res.set_cookie("logged", "yes", 30*24*3600)
-    return res
+#---------------------------------------------------------------------------------КУКИ ---------------------------------------------------------------------------
+##@app.route("/login")
+##def login():
+##    log=""
+##    if request.cookies.get('logged'):
+##        log = request.cookies.get('logged')
+##    res = make_response(f"<h1>Форма автторизации</h1><p>loogged: {log}")
+##    res.set_cookie("logged", "yes", 30*24*3600)
+##    return res
 
-@app.route("/logout")
-def logout():
-    res = make_response("<p>Вы больше не авторизованы!</p>")
-    res.set_cookie("logged", "", 0)
-    return res
+##@app.route("/logout")
+##def logout():
+##    res = make_response("<p>Вы больше не авторизованы!</p>")
+##    res.set_cookie("logged", "", 0)
+##    return res
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 ##Создание новой 
 @app.route("/about", methods=["POST", "GET"])

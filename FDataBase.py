@@ -1,4 +1,5 @@
 import sqlite3
+import time
 
 class FDataBase:
     def __init__(self, db):
@@ -74,3 +75,20 @@ class FDataBase:
             print("КРИТИЧЕСКАЯ ОШИБКА SQLITE:", e)
             print("-" * 50)
             return False
+        
+    def addUser(self, name, email, hpsw):
+        try:
+            self.__cur.execute("SELECT COUNT() as count FROM users WHERE email = ?", (email,))
+            res = self.__cur.fetchone()
+            if res['count'] > 0:
+                print("Пользователь с таким  email уже существует")
+                return False
+            
+            tm = int(time.time())
+            self.__cur.execute("INSERT INTO users (name, email, psw, time) VALUES (?, ?, ?, ?)", (name, email, hpsw, tm))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Ошибка добавления пользователя в БД" + str(e))
+            return False
+        
+        return True
