@@ -23,10 +23,10 @@
         {% endfor -%}
     </ul>
     {% endblock menu_kvartiras -%}
+    {% endblock -%}
 
-    <div class="home-btn-wrap">
-        <a class="my-button___" href="{{ url_for('index') }}">Главная</a>
-    </div>
+    {% block bottom_bar -%}
+    <a class="my-button" href="{{ url_for('index') }}">Главная</a>
     {% endblock -%}
 
 </body>

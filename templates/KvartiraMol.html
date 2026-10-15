@@ -13,7 +13,8 @@
     <li>Комнат: {{kv.rooms}}</li>
     <li>Цена: {{kv.cena}}</li>
 </ul>
-<div class="home-btn-wrap">
-    <a class="my-button___" href="{{ url_for('index') }}">Главная</a>
-</div>
+{% endblock -%}
+
+{% block bottom_bar -%}
+<a class="my-button" href="{{ url_for('index') }}">Главная</a>
 {% endblock -%}

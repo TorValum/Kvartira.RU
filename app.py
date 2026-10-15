@@ -1,8 +1,10 @@
 import sqlite3
 import os
 from flask import Flask, render_template, request, g, flash, abort, url_for, session, redirect, make_response
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from FDataBase import FDataBase
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from UserLogin import UserLogin
 
 DATABSE = 'bd.db'
 DEBUG = True 
@@ -12,6 +14,14 @@ app.config.from_object(__name__)
 app.config['SECRET_KEY'] = "dasdsajfdsfkjdsfkjbdhfbdsi32139721387198739fuidhuh178dsa"
 
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'bd.db')))
+
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    print("load_user")
+    return UserLogin().fromDB(user_id, dbase)
 
 def connect_db():
     conn = sqlite3.connect(app.config['DATABASE'])
@@ -47,6 +57,7 @@ def index ():
     return render_template('index.html', menu = dbase.getMenu())
 
 @app.route("/contact", methods=["POST", "GET"]) 
+@login_required
 def contact ():
     print(url_for('contact'))
     if request.method == 'POST':
@@ -60,6 +71,7 @@ def contact ():
     return render_template('feedback.html')
 
 @app.route("/kvartiry")
+@login_required
 def show_kvartiry():
     print(url_for('show_kvartiry'))
     db = get_db()
@@ -96,14 +108,17 @@ def error(e):
     return render_template('error.html', menu = menu)
 
 @app.route("/profile/<username>")
+@login_required
 def profile(username):
-    if 'userLogged' not in session or session['userLogged'] != username:
+    if current_user.name != username:
         abort(401)
     return f"Профиль пользователя: {username}"
 
-@app.route("/login")
-def login():
-    return render_template("login.html", menu = dbase.getMenu())
+#-------------------------------------login.html старый, чисто templates-------------------------------------------
+#@app.route("/login")
+#def login():
+#    return render_template("login.html", menu = dbase.getMenu())
+#-----------------------------------------------------------------------------------------------------------------
 
 
 @app.route("/register", methods=["POST", "GET"])
@@ -120,18 +135,21 @@ def register():
             flash('Ошибка регистрации', category='error')
     return render_template("register.html", menu = dbase.getMenu()) 
 
-##@app.route("/login", methods=["POST", "GET"])
-##def login():
-##    db = get_db()
-##    dbase = FDataBase(db)
-##    menu = dbase.getMenu()
-##    if 'userLogged' in session:
-##        return redirect(url_for('profile', username=session['userLogged']))
-##    elif request.method == 'POST' and  request.form['username'] == "selfedu" and request.form['psw'] == "123":
-##        session['userLogged'] = request.form['username']
-##        return redirect(url_for('profile', username=session['userLogged']))
-    
-##    return render_template('login.html', title="Авторизация", menu=menu)
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    db = get_db()
+    dbase = FDataBase(db)
+    menu = dbase.getMenu()
+    if request.method == "POST":
+        user = dbase.getUserByEmail(request.form['email'])
+        if user and check_password_hash(user['psw'], request.form['psw']):
+            user_login = UserLogin().create(user)
+            login_user(user_login)
+            return redirect(url_for('index'))
+
+        flash("Неверная пара логин/пароль", "error")
+
+    return render_template('login.html', title="Авторизация", menu=menu)
 
 
 #---------------------------------------------------------------------------------КУКИ ---------------------------------------------------------------------------
@@ -154,6 +172,7 @@ def register():
 
 ##Создание новой 
 @app.route("/about", methods=["POST", "GET"])
+@login_required
 def zayvka_kvartira():
     print(url_for('zayvka_kvartira'))
     db = get_db()
@@ -189,5 +208,13 @@ def showSite(alias):
                            objectsInCertificate=dbase.getObjectInCertificatesAnonce(), StationId=StationId, StationName=StationName, title=StationName)
 
 '''
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()  # Эта функция удаляет данные пользователя из сессии Flask
+    flash("Вы успешно вышли из аккаунта", category='success')
+    return redirect(url_for('login'))
+
 if __name__ == "__main__":
-    app.run(debug=True, port=5003)
+    app.run(debug=True, port=5008)
+
