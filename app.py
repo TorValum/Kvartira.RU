@@ -5,13 +5,17 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from FDataBase import FDataBase
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from UserLogin import UserLogin
+from admin.admin import admin 
 
 DATABSE = 'bd.db'
 DEBUG = True 
-
+MAX_CONTENT_LENGHT = 1024*1024
+ 
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['SECRET_KEY'] = "dasdsajfdsfkjdsfkjbdhfbdsi32139721387198739fuidhuh178dsa"
+
+app.register_blueprint(admin, url_prefix='/admin')
 
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'bd.db')))
 

@@ -30,6 +30,7 @@
         {% block bottom_bar -%}{% endblock -%}
         {% if request.path == '/' -%}
         <a class="my-button" href="{{ url_for('login') }}">Авторизация</a>
+        <a class="my-button" href="{{ url_for('logout') }}">Выход</a>
         {% elif current_user.is_authenticated -%}
         <a class="my-button" href="{{ url_for('logout') }}">Выход</a>
         {% else -%}

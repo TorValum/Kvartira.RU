@@ -21,8 +21,8 @@
     </form>
     {% endblock mainmenu -%}
 
-    <div class="home-btn-wrap">
-        <a class="my-button" href="{{ url_for('index') }}">Главная</a>
-    </div>
+    {% block bottom_bar -%}
+    <a class="my-button" href="{{ url_for('index') }}">Главная</a>
+    {% endblock -%}
     {% endblock -%}
 </body>

@@ -15,11 +15,14 @@
     <form action="/login" method="post" class="form-contact">
         <p><label>Email:</label><input type="text" name="email" value="" required />
         <p><label> Пароль:</label><input type="password" name="psw" value="" required />
-        <p><input type="checkbox" name="remainme"/> Запомнить меня
+        <p><input type="checkbox" name="remainme" /> Запомнить меня
         <p><input type="submit" value="Войти" />
-        <hr align= left width= "300px">
-        <p><a href="{{url_for('register')}}">Регистрация</a></p>
+            <hr align=left width="300px">
     </form>
     {% endblock -%}
 </body>
+{% endblock -%}
+{% block bottom_bar -%}
+<p><a class="my-button" href="{{url_for('register')}}">Регистрация</a></p>
+<a class="my-button" href="{{ url_for('index') }}">Главная</a>
 {% endblock -%}
