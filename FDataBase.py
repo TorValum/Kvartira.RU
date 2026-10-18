@@ -63,18 +63,59 @@ class FDataBase:
             print("Ошибка получения квартиры" + str(e))
         return None
 
-    def newZayavka(self, zhelaemyi_adres, zhelaemyi_cena, zhelaemyi_rooms):
+    def newZayavka(self, zhelaemyi_adres, zhelaemyi_cena, zhelaemyi_rooms, user_id=None, status='На рассмотрении', tm=None):
         try:
-            self.__cur.execute("INSERT INTO Zayavka2 (zhelaemyi_adres, zhelaemyi_cena, zhelaemyi_rooms) VALUES (?, ?, ?)", (zhelaemyi_adres, zhelaemyi_cena,zhelaemyi_rooms))
+            if tm is None:
+                tm = int(time.time())
+            self.__cur.execute(
+                "INSERT INTO Zayavka2 (zhelaemyi_adres, zhelaemyi_cena, zhelaemyi_rooms, user_id, status, time) VALUES (?, ?, ?, ?, ?, ?)",
+                (zhelaemyi_adres, zhelaemyi_cena, zhelaemyi_rooms, user_id, status, tm))
             self.__db.commit()
             print("Заявка успешно добавлена")
             return True
         except sqlite3.Error as e:
-            print("Ошибка добавления заявки в Базу Данных" +str(e))
+            print("Ошибка добавления заявки в Базу Данных" + str(e))
             print("-" * 50)
             print("КРИТИЧЕСКАЯ ОШИБКА SQLITE:", e)
             print("-" * 50)
             return False
+
+    def getAllZayavki(self):
+        try:
+            self.__cur.execute("""
+                SELECT z.id, z.zhelaemyi_adres, z.zhelaemyi_cena, z.zhelaemyi_rooms,
+                       z.status, z.time, z.user_id, u.email
+                FROM Zayavka2 z
+                LEFT JOIN users u ON z.user_id = u.id
+                ORDER BY z.id DESC
+            """)
+            res = self.__cur.fetchall()
+            if res:
+                return res
+        except sqlite3.Error as e:
+            print("Ошибка получения заявок" + str(e))
+        return []
+
+    def updateZayavkaStatus(self, zayavka_id, status):
+        try:
+            self.__cur.execute("UPDATE Zayavka2 SET status = ? WHERE id = ?", (status, zayavka_id))
+            self.__db.commit()
+            return True
+        except sqlite3.Error as e:
+            print("Ошибка обновления статуса заявки" + str(e))
+            return False
+
+    def getZayavkiByUser(self, user_id):
+        try:
+            self.__cur.execute(
+                "SELECT id, zhelaemyi_adres, zhelaemyi_cena, zhelaemyi_rooms, status, time FROM Zayavka2 WHERE user_id = ? ORDER BY id DESC",
+                (user_id,))
+            res = self.__cur.fetchall()
+            if res:
+                return res
+        except sqlite3.Error as e:
+            print("Ошибка получения заявок пользователя" + str(e))
+        return []
         
     def addUser(self, name, email, hpsw):
         try:

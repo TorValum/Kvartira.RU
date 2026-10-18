@@ -213,3 +213,18 @@ img {
     border: 1px solid #FF4343;
     background: #ff9c9c;
 }
+
+.owner-contact {
+    margin-top: 26px;
+    padding: 20px;
+    background: rgba(33, 219, 86, 0.12);
+    border: 1px solid #21DB56;
+    border-radius: 14px;
+    text-align: center;
+    color: #fff;
+    animation: fadein 0.5s ease;
+}
+
+.owner-contact p {
+    margin: 0 0 10px 0;
+}

@@ -27,7 +27,7 @@
     {% endblock -%}
 
     <div class="bottom-bar">
-        {% block bottom_bar -%}{% endblock -%}
+        {% block bottom_bar -%}
         {% if request.path == '/' -%}
         <a class="my-button" href="{{ url_for('login') }}">Авторизация</a>
         <a class="my-button" href="{{ url_for('logout') }}">Выход</a>
@@ -36,6 +36,7 @@
         {% else -%}
         <a class="my-button" href="{{ url_for('login') }}">Авторизация</a>
         {% endif -%}
+        {% endblock -%}
     </div>
 
 </body>

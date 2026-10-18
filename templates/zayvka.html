@@ -19,6 +19,59 @@
         <p><label> Количесттво комнат:</label><input type="integer" name="kol_vo_rooms" value="" required />
         <p><input type="submit" value="Отправить" />
     </form>
+
+    {% if current_user.is_authenticated %}
+    {% if my_zayavki %}
+    <hr />
+    <h3>Ваши заявки</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Адрес</th>
+                <th>Цена</th>
+                <th>Комнат</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for z in my_zayavki %}
+            <tr>
+                <td>{{ z['id'] }}</td>
+                <td>{{ z['zhelaemyi_adres'] }}</td>
+                <td>{{ z['zhelaemyi_cena'] }}</td>
+                <td>{{ z['zhelaemyi_rooms'] }}</td>
+                <td>
+                    {% if z['status'] == 'Одобрено' %}
+                        <span style="color: #21DB56; font-weight:bold;">Одобрено ✅</span>
+                    {% elif z['status'] == 'Отклонено' %}
+                        <span style="color: #FF4343; font-weight:bold;">Отклонено ❌</span>
+                    {% else %}
+                        {{ z['status'] }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% set ns = namespace(has_approved=false) %}
+    {% for z in my_zayavki %}
+        {% if z['status'] == 'Одобрено' %}
+            {% set ns.has_approved = true %}
+        {% endif %}
+    {% endfor %}
+    {% if ns.has_approved %}
+    <div class="owner-contact">
+        <p><strong>Ваша заявка одобрена!</strong> Свяжитесь с арендодателем:</p>
+        <p style="font-size:18px; color:#21DB56; font-weight:bold;">📞 88005553535 — Олег</p>
+    </div>
+    {% endif %}
+    {% else %}
+    <p style="margin-top:16px; color:#bbb;">У вас пока нет заявок.</p>
+    {% endif %}
+    {% else %}
+    <p style="margin-top:16px; color:#ff9c9c;"><strong>Вы не вошли в аккаунт.</strong> <a href="{{ url_for('login') }}" style="color:#007bff;">Войти</a>, чтобы отправлять заявки и видеть их статус.</p>
+    {% endif %}
     {% endblock mainmenu -%}
 
     {% block bottom_bar -%}
@@ -26,3 +79,5 @@
     {% endblock -%}
     {% endblock -%}
 </body>
+
+</html>

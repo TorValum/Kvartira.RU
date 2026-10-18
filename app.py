@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import time
 from flask import Flask, render_template, request, g, flash, abort, url_for, session, redirect, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 from FDataBase import FDataBase
@@ -181,12 +182,18 @@ def zayvka_kvartira():
     print(url_for('zayvka_kvartira'))
     db = get_db()
     dbase = FDataBase(db)
+    user_id = current_user.get_id()
+    my_zayavki = dbase.getZayavkiByUser(user_id)
     if request.method == "POST":
         if ( (len(request.form['zhelaemyi_adres']) >= 4) and (len(request.form['zhelaemyi_cena']) >= 4) and  (len(request.form['kol_vo_rooms']) >0)):
+            tm = int(time.time())
             res = dbase.newZayavka(
                 request.form['zhelaemyi_adres'],
                 request.form['zhelaemyi_cena'],
                 request.form['kol_vo_rooms'],
+                user_id,
+                'На рассмотрении',
+                tm
             )   
             if not res:
                 flash('Ошибка добавления заявки', category='error')
@@ -195,7 +202,7 @@ def zayvka_kvartira():
         else:
             flash('Ошибка добавления заявки', category='error')
     
-    return render_template('zayvka.html', menu=dbase.getMenu(), title="Заявки")
+    return render_template('zayvka.html', menu=dbase.getMenu(), title="Заявки", my_zayavki=my_zayavki)
 
 '''
 ##хз!!!!!!!!!!!!!!!!!!
@@ -219,6 +226,26 @@ def logout():
     flash("Вы успешно вышли из аккаунта", category='success')
     return redirect(url_for('login'))
 
+def migrate_db():
+    """Добавляет недостающие колонки в таблицу Zayavka2 для уже существующей БД"""
+    db = connect_db()
+    cur = db.cursor()
+    try:
+        cur.execute("ALTER TABLE Zayavka2 ADD COLUMN status varchar DEFAULT 'На рассмотрении'")
+    except sqlite3.OperationalError:
+        pass  # колонка уже существует
+    try:
+        cur.execute("ALTER TABLE Zayavka2 ADD COLUMN user_id integer")
+    except sqlite3.OperationalError:
+        pass
+    try:
+        cur.execute("ALTER TABLE Zayavka2 ADD COLUMN time integer")
+    except sqlite3.OperationalError:
+        pass
+    db.commit()
+    db.close()
+
 if __name__ == "__main__":
+    migrate_db()
     app.run(debug=True, port=5008)
 

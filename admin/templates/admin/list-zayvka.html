@@ -1,0 +1,68 @@
+{% extends 'admin/base_admin.html'%}
+
+{% block content %}
+<div class="admin-card">
+    <h2>Заявки клиентов</h2>
+    {% for cat, msg in get_flashed_messages(True) %}
+    <div class="flash {{cat}}">{{msg}}</div>
+    {% endfor %}
+
+    {% if zayavki %}
+    <table class="zayavki">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Почта клиента</th>
+                <th>Желаемый адрес</th>
+                <th>Цена</th>
+                <th>Комнат</th>
+                <th>Статус</th>
+                <th>Время заявки</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for z in zayavki %}
+            <tr>
+                <td>{{ z['id'] }}</td>
+                <td>{{ z['email'] if z['email'] else '—' }}</td>
+                <td>{{ z['zhelaemyi_adres'] }}</td>
+                <td>{{ z['zhelaemyi_cena'] }}</td>
+                <td>{{ z['zhelaemyi_rooms'] }}</td>
+                <td>
+                    {% if z['status'] == 'Одобрено' %}
+                        <span class="status status-ok">Одобрено</span>
+                    {% elif z['status'] == 'Отклонено' %}
+                        <span class="status status-no">Отклонено</span>
+                    {% else %}
+                        <span class="status status-new">{{ z['status'] }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ z['time'] }}</td>
+                <td>
+                    {% if z['status'] == 'На рассмотрении' %}
+                        <div class="actions">
+                            <form action="{{ url_for('.zayvka_approve', zayavka_id=z['id']) }}" method="post" style="display:inline-block;">
+                                <button type="submit" class="btn-approve">Одобрить</button>
+                            </form>
+                            <form action="{{ url_for('.zayvka_reject', zayavka_id=z['id']) }}" method="post" style="display:inline-block;">
+                                <button type="submit" class="btn-reject">Отклонить</button>
+                            </form>
+                        </div>
+                    {% else %}
+                        <span style="color:#888; font-size:12px;">—</span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="text-align:center;">Заявок пока нет.</p>
+    {% endif %}
+
+    <p style="text-align:center; margin-top:10px;">
+        <a class="btn-back" href="{{ url_for('.index') }}">Назад в панель</a>
+    </p>
+</div>
+{% endblock %}

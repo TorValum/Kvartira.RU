@@ -1,0 +1,258 @@
+/* ===== АДМИН-ПАНЕЛЬ: общий фон как на сайте ===== */
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    box-sizing: border-box;
+}
+
+/* ===== Главная карточка админки ===== */
+.admin-card {
+    max-width: 920px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.78);
+    border: 1px solid #555;
+    border-radius: 20px;
+    padding: 34px 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.admin-card h2 {
+    margin: 0 0 8px 0;
+    font-size: 26px;
+    color: #fff;
+    text-align: center;
+}
+
+.admin-card p {
+    margin: 0 0 24px 0;
+    text-align: center;
+    color: #bbb;
+    font-size: 15px;
+}
+
+/* ===== Меню админки (сверху) ===== */
+.mainmenu {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 26px 0;
+    display: flex;
+    gap: 35px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.mainmenu li a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 15px;
+    padding: 8px 16px;
+    border: 1px solid #444;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+}
+
+.mainmenu li a:hover {
+    background: rgba(0, 123, 255, 0.25);
+    border-color: #007bff;
+    color: #fff;
+}
+
+/* ===== Flash-сообщения ===== */
+.flash {
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.4;
+    animation: fadein 0.4s ease;
+    border: 1px solid;
+}
+
+@keyframes fadein {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.flash.error {
+    border-color: #FF4343;
+    background: rgba(255, 156, 156, 0.2);
+    color: #ff9c9c;
+}
+
+.flash.success {
+    border-color: #21DB56;
+    background: rgba(174, 255, 197, 0.2);
+    color: #aeffc5;
+}
+
+/* ===== Таблица заявок ===== */
+table.zayavki {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    color: #fff;
+}
+
+table.zayavki th,
+table.zayavki td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+table.zayavki th {
+    background: rgba(0, 123, 255, 0.15);
+    color: #8ab4f8;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+table.zayavki tr:last-child td {
+    border-bottom: none;
+}
+
+table.zayavki tr:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+table.zayavki td {
+    font-size: 14px;
+}
+
+table.zayavki td:nth-child(1) {
+    width: 40px;
+    color: #888;
+}
+
+/* ===== Статусы (бэджи) ===== */
+.status {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+.status-ok {
+    background: rgba(33, 219, 86, 0.18);
+    color: #21DB56;
+    border: 1px solid rgba(33, 219, 86, 0.4);
+}
+
+.status-no {
+    background: rgba(255, 67, 67, 0.18);
+    color: #FF4343;
+    border: 1px solid rgba(255, 67, 67, 0.4);
+}
+
+.status-new {
+    background: rgba(0, 123, 255, 0.18);
+    color: #8ab4f8;
+    border: 1px solid rgba(0, 123, 255, 0.4);
+}
+
+/* ===== Кнопки действий (одобрить / отклонить) ===== */
+.actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.btn-approve,
+.btn-reject,
+.btn-back {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-approve {
+    background-color: #21DB56;
+    color: #004d10;
+}
+
+.btn-approve:hover {
+    background-color: #1aa844;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(33, 219, 86, 0.3);
+}
+
+.btn-reject {
+    background-color: #FF4343;
+    color: #fff;
+}
+
+.btn-reject:hover {
+    background-color: #d92a2a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 67, 67, 0.3);
+}
+
+.btn-back {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-back:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Адаптив */
+@media (max-width: 600px) {
+    .admin-card {
+        padding: 22px 18px;
+        margin: 0 10px;
+    }
+    .actions {
+        flex-direction: column;
+    }
+    .btn-approve,
+    .btn-reject,
+    .btn-back {
+        width: 100%;
+        text-align: center;
+    }
+    table.zayavki {
+        font-size: 13px;
+    }
+    table.zayavki th,
+    table.zayavki td {
+        padding: 10px 12px;
+    }
+}

@@ -24,3 +24,7 @@ class UserLogin():
     @property
     def name(self):
         return self.__user['name'] if self.__user else None
+
+    @property
+    def email(self):
+        return self.__user['email'] if self.__user else None
